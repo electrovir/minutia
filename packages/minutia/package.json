@@ -1,0 +1,39 @@
+{
+    "name": "minutia",
+    "description": "",
+    "keywords": [],
+    "homepage": "https://github.com/electrovir/minutia",
+    "bugs": {
+        "url": "https://github.com/electrovir/minutia/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/electrovir/minutia.git"
+    },
+    "license": "(MIT OR CC0-1.0)",
+    "author": {
+        "name": "electrovir",
+        "url": "https://github.com/electrovir"
+    },
+    "sideEffects": false,
+    "type": "module",
+    "main": "src/index.ts",
+    "module": "src/index.ts",
+    "types": "src/index.ts",
+    "scripts": {
+        "build": "virmator frontend build",
+        "compile": "virmator compile",
+        "docs": "virmator docs",
+        "start": "virmator frontend",
+        "test": "virmator test web",
+        "test:coverage": "npm run test coverage",
+        "test:docs": "virmator docs check",
+        "test:update": "npm test update"
+    },
+    "engines": {
+        "node": ">=22"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}
