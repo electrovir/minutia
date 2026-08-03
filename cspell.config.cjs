@@ -7,5 +7,8 @@ module.exports = {
     ],
     words: [
         ...baseConfig.words,
+        'rebrowser',
+        'libm',
+        'opfs',
     ],
 };

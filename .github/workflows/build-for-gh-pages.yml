@@ -23,8 +23,8 @@ jobs:
             - name: build
               run: |
                   npm ci
-                  npm run docs
+                  npm run build
             - uses: JamesIves/github-pages-deploy-action@v4.6.3
               with:
                   branch: 'gh-pages'
-                  folder: 'dist-docs'
+                  folder: 'dist-pages'
