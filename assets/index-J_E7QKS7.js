@@ -658,8 +658,8 @@ var e=Object.create,t=Object.defineProperty,n=Object.getOwnPropertyDescriptor,r=
                     `)}
             </tbody>
         </table>
-    `}function aM({title:e,group:t}){return bO`
-        <${Jj}>
+    `}function aM({title:e,group:t,startExpanded:n}){return bO`
+        <${Jj.assign({startExpanded:n})}>
             <span
                 class="card-header"
                 slot=${Jj.slotNames[`vira-collapsible-card-header`]}
@@ -719,33 +719,33 @@ var e=Object.create,t=Object.defineProperty,n=Object.getOwnPropertyDescriptor,r=
             align-items: center;
             margin-bottom: 8px;
         }
-    `,state:()=>({report:void 0,marker:``,persistence:void 0,isPersistenceRunning:!1}),init({inputs:e,updateState:t}){let n=new URLSearchParams(window.location.search),r=e.persistenceMarker||n.get(tM)||Uc();n.get(tM)!==r&&(n.set(tM,r),window.history.replaceState(void 0,``,`?${n.toString()}`)),t({marker:r}),rj(e=>{t({report:e})},{cspProbeScriptUrl:e.cspProbeScriptUrl})},render({state:e,updateState:t}){function n(n){t({isPersistenceRunning:!0}),tj({mode:n,marker:e.marker}).then(e=>{t({persistence:e,isPersistenceRunning:!1})})}let r=e.report;return r?bO`
-            ${aM({title:`Bot signals`,group:r.bot})}
-            ${aM({title:`Automation checks`,group:r.automation})}
-            ${aM({title:`OS fingerprints`,group:r.fingerprint})}
+    `,state:()=>({report:void 0,marker:``,persistence:void 0,isPersistenceRunning:!1}),init({inputs:e,updateState:t}){let n=new URLSearchParams(window.location.search),r=e.persistenceMarker||n.get(tM)||Uc();n.get(tM)!==r&&(n.set(tM,r),window.history.replaceState(void 0,``,`?${n.toString()}`)),t({marker:r}),rj(e=>{t({report:e})},{cspProbeScriptUrl:e.cspProbeScriptUrl})},render({inputs:e,state:t,updateState:n}){function r(e){n({isPersistenceRunning:!0}),tj({mode:e,marker:t.marker}).then(e=>{n({persistence:e,isPersistenceRunning:!1})})}let i=t.report;return i?bO`
+            ${aM({title:`Bot signals`,group:i.bot,startExpanded:!!e.startExpanded})}
+            ${aM({title:`Automation checks`,group:i.automation,startExpanded:!!e.startExpanded})}
+            ${aM({title:`OS fingerprints`,group:i.fingerprint,startExpanded:!!e.startExpanded})}
 
-            <${Jj}>
+            <${Jj.assign({startExpanded:!!e.startExpanded})}>
                 <span
                     class="card-header"
                     slot=${Jj.slotNames[`vira-collapsible-card-header`]}
                 >
                     Storage persistence
-                    ${e.persistence?rM(e.persistence.verdict):``}
+                    ${t.persistence?rM(t.persistence.verdict):``}
                 </span>
                 <p class="note">
                     Seed the marker, then reload the page (or close it and come back) and verify it.
                     Whatever still passes survived in between. Current marker:
-                    <code>${e.marker}</code>
+                    <code>${t.marker}</code>
                 </p>
                 <nav>
-                    <${Kj.assign({text:`Seed storage`,isDisabled:e.isPersistenceRunning,color:Tj.Info})}
-                        ${rO(`click`,()=>{n(YA.Seed)})}
+                    <${Kj.assign({text:`Seed storage`,isDisabled:t.isPersistenceRunning,color:Tj.Info})}
+                        ${rO(`click`,()=>{r(YA.Seed)})}
                     ></${Kj}>
-                    <${Kj.assign({text:`Verify storage`,isDisabled:e.isPersistenceRunning,color:Tj.Info})}
-                        ${rO(`click`,()=>{n(YA.Verify)})}
+                    <${Kj.assign({text:`Verify storage`,isDisabled:t.isPersistenceRunning,color:Tj.Info})}
+                        ${rO(`click`,()=>{r(YA.Verify)})}
                     ></${Kj}>
                 </nav>
-                ${e.persistence?iM(e.persistence.assessments):``}
+                ${t.persistence?iM(t.persistence.assessments):``}
             </${Jj}>
         `:bO`
                 <p class="pending">Running checks…</p>
