@@ -62,9 +62,15 @@ function renderAssessments(assessments: ReadonlyArray<Assessment>) {
     `;
 }
 
-function renderGroup({title, group}: Readonly<{title: string; group: AssessmentGroup}>) {
+function renderGroup({
+    title,
+    group,
+    startExpanded,
+}: Readonly<{title: string; group: AssessmentGroup; startExpanded: boolean}>) {
     return html`
-        <${ViraCollapsibleCard}>
+        <${ViraCollapsibleCard.assign({
+            startExpanded,
+        })}>
             <span
                 class="card-header"
                 slot=${ViraCollapsibleCard.slotNames['vira-collapsible-card-header']}
@@ -102,6 +108,12 @@ export const MinutiaSummary = defineElement<{
     cspProbeScriptUrl?: string | undefined;
     /** Overrides the marker used for the storage persistence test. */
     persistenceMarker?: string | undefined;
+    /**
+     * Expands every section on load. Each section can still be collapsed afterwards.
+     *
+     * @default false
+     */
+    startExpanded?: boolean | undefined;
 }>()({
     tagName: 'minutia-summary',
     styles: css`
@@ -187,7 +199,7 @@ export const MinutiaSummary = defineElement<{
             },
         );
     },
-    render({state, updateState}) {
+    render({inputs, state, updateState}) {
         function startPersistence(mode: PersistenceMode): void {
             updateState({
                 isPersistenceRunning: true,
@@ -214,17 +226,22 @@ export const MinutiaSummary = defineElement<{
             ${renderGroup({
                 title: 'Bot signals',
                 group: report.bot,
+                startExpanded: !!inputs.startExpanded,
             })}
             ${renderGroup({
                 title: 'Automation checks',
                 group: report.automation,
+                startExpanded: !!inputs.startExpanded,
             })}
             ${renderGroup({
                 title: 'OS fingerprints',
                 group: report.fingerprint,
+                startExpanded: !!inputs.startExpanded,
             })}
 
-            <${ViraCollapsibleCard}>
+            <${ViraCollapsibleCard.assign({
+                startExpanded: !!inputs.startExpanded,
+            })}>
                 <span
                     class="card-header"
                     slot=${ViraCollapsibleCard.slotNames['vira-collapsible-card-header']}

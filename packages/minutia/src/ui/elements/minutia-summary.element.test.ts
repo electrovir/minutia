@@ -1,10 +1,14 @@
 import {assert, assertWrap, waitUntil} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
+import {ViraCollapsibleCard} from 'vira';
 import {MinutiaSummary} from './minutia-summary.element.js';
 
 /** Attaches the element to the document and removes it once the test ends. */
-async function renderSummary(): Promise<Element> {
-    const element = document.createElement(MinutiaSummary.tagName);
+async function renderSummary(inputs?: Readonly<{startExpanded: boolean}>) {
+    const element = new MinutiaSummary();
+    if (inputs) {
+        element.assignInputs(inputs);
+    }
     document.body.append(element);
     await waitUntil.isDefined(() => element.shadowRoot);
     return element;
@@ -22,9 +26,8 @@ describe(MinutiaSummary.tagName, () => {
     it('shows one card per check group once the checks resolve', async () => {
         const element = await renderSummary();
 
-        const headers = await waitUntil.isLengthExactly(
-            expectedCardHeaders.length,
-            () => element.shadowRoot?.querySelectorAll('.card-header') ?? [],
+        const headers = await waitUntil.isLengthExactly(expectedCardHeaders.length, () =>
+            element.shadowRoot.querySelectorAll('.card-header'),
         );
 
         assert.deepEquals(
@@ -38,9 +41,8 @@ describe(MinutiaSummary.tagName, () => {
     it('labels and explains every assessment in every group', async () => {
         const element = await renderSummary();
 
-        const rows = await waitUntil.isLengthAtLeast(
-            1,
-            () => element.shadowRoot?.querySelectorAll('tr') ?? [],
+        const rows = await waitUntil.isLengthAtLeast(1, () =>
+            element.shadowRoot.querySelectorAll('tr'),
         );
 
         Array.from(rows).forEach((row) => {
@@ -49,6 +51,50 @@ describe(MinutiaSummary.tagName, () => {
             );
             assert.isNotEmpty(assertWrap.isDefined(row.querySelector('.note')).textContent.trim());
         });
+        element.remove();
+    });
+
+    it('collapses every card by default', async () => {
+        const element = await renderSummary();
+
+        const cards = await waitUntil.isLengthExactly(expectedCardHeaders.length, () =>
+            element.shadowRoot.querySelectorAll<typeof ViraCollapsibleCard.InstanceType>(
+                ViraCollapsibleCard.tagName,
+            ),
+        );
+
+        assert.deepEquals(
+            Array.from(cards, (card) => card.instanceState.isExpanded),
+            [
+                false,
+                false,
+                false,
+                false,
+            ],
+        );
+        element.remove();
+    });
+
+    it('expands every card when startExpanded is set', async () => {
+        const element = await renderSummary({
+            startExpanded: true,
+        });
+
+        const cards = await waitUntil.isLengthExactly(expectedCardHeaders.length, () =>
+            element.shadowRoot.querySelectorAll<typeof ViraCollapsibleCard.InstanceType>(
+                ViraCollapsibleCard.tagName,
+            ),
+        );
+
+        assert.deepEquals(
+            Array.from(cards, (card) => card.instanceState.isExpanded),
+            [
+                true,
+                true,
+                true,
+                true,
+            ],
+        );
         element.remove();
     });
 });

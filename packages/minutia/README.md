@@ -106,7 +106,7 @@ Plain HTML works too, as long as the module has been imported somewhere:
 
 Renders the test results. It updates itself as automation checks resolve.
 
-The element takes no required inputs. `cspProbeScriptUrl` and `persistenceMarker` are optional inputs.
+The element takes no required inputs. `cspProbeScriptUrl`, `persistenceMarker`, and `startExpanded` are optional inputs. Set `startExpanded` to open every section on load.
 
 ### The CSP bypass check
 
