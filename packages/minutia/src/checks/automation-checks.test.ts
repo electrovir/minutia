@@ -5,6 +5,7 @@ import {Verdict} from './assessment.js';
 import {
     AutomationCheckId,
     compareChromeVersions,
+    defaultCspProbeScriptUrl,
     getAutomationReport,
     startAutomationChecks,
     type AutomationReport,
@@ -40,14 +41,13 @@ describe('startAutomationChecks', () => {
         assert.deepEquals(reports[0], getAutomationReport());
     });
 
-    it('warns rather than staying silent when no CSP probe URL was given', () => {
+    it('falls back to the hosted probe script when no CSP probe URL was given', () => {
         startAutomationChecks(() => {});
-        const bypassCsp = getAutomationReport().assessments.find(
-            (candidate) => candidate.id === AutomationCheckId.BypassCsp,
-        );
 
-        assert.isDefined(bypassCsp);
-        assert.strictEquals(bypassCsp.verdict, Verdict.Warning);
+        assert.isDefined(
+            document.head.querySelector(`script[src="${defaultCspProbeScriptUrl}"]`),
+            'the CSP bypass check did not load the default probe script',
+        );
     });
 
     it('resolves the checks that do not need an external trigger', async () => {

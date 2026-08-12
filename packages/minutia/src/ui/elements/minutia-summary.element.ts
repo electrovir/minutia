@@ -102,8 +102,8 @@ function renderGroup({
  */
 export const MinutiaSummary = defineElement<{
     /**
-     * Cross-origin script URL for the CSP bypass check. Without it that check reports
-     * {@link Verdict.Warning} telling you to set it.
+     * Cross-origin script URL for the CSP bypass check. Defaults to the probe script hosted
+     * alongside this package's demo page.
      */
     cspProbeScriptUrl?: string | undefined;
     /** Overrides the marker used for the storage persistence test. */

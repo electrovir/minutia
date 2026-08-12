@@ -110,7 +110,7 @@ The element takes no required inputs. `cspProbeScriptUrl`, `persistenceMarker`, 
 
 ### The CSP bypass check
 
-`bypassCsp` is the one check that touches the network, and it has no default URL. Point it at a cross-origin script your page's `script-src` forbids:
+`bypassCsp` is the one check that touches the network. It defaults to `https://electrovir.github.io/minutia/csp-probe.js`, a do-nothing script hosted with this package's demo page. Point it at a cross-origin script your page's `script-src` forbids to keep the request on an origin you control:
 
 <!-- example-link: src/readme-examples/csp-bypass.example.ts -->
 
@@ -123,7 +123,7 @@ await runMinutia({
 });
 ```
 
-Left unset, the check reports `warning` with a note telling you to set it. It cannot pass silently: without a probe URL nothing is ever loaded, so a page would otherwise believe its CSP was verified when the check never ran.
+The probe must be a real, loadable URL. A URL that 404s fails to load for the same reason a blocked one does, so the check would report a pass it never earned.
 
 ### OS fingerprint reference
 

@@ -103,15 +103,13 @@ function pendingResult(note: string): AssessmentResult {
 }
 
 /**
- * A missing `cspProbeScriptUrl` is the one unset option that warns rather than leaving its check
- * pending: without a probe URL the check can never run at all, so leaving it silent would let a
- * page believe its CSP was verified when nothing was ever loaded.
+ * The probe script the CSP bypass check loads when no `cspProbeScriptUrl` is given. It is a
+ * do-nothing script hosted alongside this package's demo page, so the check has a cross-origin
+ * target for any page that is not itself served from `electrovir.github.io`.
+ *
+ * @category Internal
  */
-const missingCspUrlResult: AssessmentResult = {
-    verdict: Verdict.Warning,
-    note: 'This check did not run. Set cspProbeScriptUrl to a cross-origin script that your page’s script-src forbids.',
-    debug: 'cspProbeScriptUrl is unset',
-};
+export const defaultCspProbeScriptUrl = 'https://electrovir.github.io/minutia/csp-probe.js';
 
 const initialResults: Record<AutomationCheckId, AssessmentResult> = {
     [AutomationCheckId.MainWorldObjectAccess]: pendingResult(
@@ -128,7 +126,7 @@ const initialResults: Record<AutomationCheckId, AssessmentResult> = {
         'No window.minutiaExposedFunction is present. Call page.exposeFunction("minutiaExposedFunction", …) to trigger this check.',
     ),
     [AutomationCheckId.NavigatorWebdriver]: pendingResult('Reading navigator.webdriver…'),
-    [AutomationCheckId.BypassCsp]: missingCspUrlResult,
+    [AutomationCheckId.BypassCsp]: pendingResult('Loading a cross-origin probe script…'),
     [AutomationCheckId.Viewport]: pendingResult('Measuring the viewport…'),
     [AutomationCheckId.UserAgentData]: pendingResult(
         'Comparing against the latest Chrome release…',
@@ -651,10 +649,8 @@ export type AutomationChecksOptions = Readonly<{
      * origin your page's `script-src` forbids, or the check cannot tell a bypass apart from an
      * ordinary network failure.
      *
-     * There is deliberately no default: this is the only check that talks to the network, and
-     * picking a third-party URL on the caller's behalf would make every consumer of this package
-     * silently hit someone else's server. Leave it unset and the check reports
-     * {@link Verdict.Warning} telling you to set it.
+     * Defaults to {@link defaultCspProbeScriptUrl}. This is the only check that talks to the
+     * network, so set your own URL to keep the request on an origin you control.
      */
     cspProbeScriptUrl?: string | undefined;
 }>;
@@ -738,9 +734,7 @@ export function startAutomationChecks(
     void reportRuntimeEnableLeak(report);
     void pollExposeFunctionLeak(report, runState);
     reportNavigatorWebdriver(report);
-    if (cspProbeScriptUrl) {
-        initBypassCsp(report, cspProbeScriptUrl);
-    }
+    initBypassCsp(report, cspProbeScriptUrl || defaultCspProbeScriptUrl);
     reportViewport(report);
     void reportUserAgentData(report);
     void reportUserAgent(report);
