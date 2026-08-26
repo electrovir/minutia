@@ -54,7 +54,7 @@
         "vira": "^31.28.3"
     },
     "peerDependencies": {
-        "element-vir": ">=26",
+        "element-vir": "^26",
         "vira": ">=31"
     },
     "engines": {
