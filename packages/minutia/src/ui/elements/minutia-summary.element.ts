@@ -1,5 +1,5 @@
 import {randomString} from '@augment-vir/common';
-import {css, defineElement, html, listen} from 'element-vir';
+import {css, defineElement, defineElementEvent, html, listen} from 'element-vir';
 import {
     ViraButton,
     ViraCollapsibleCard,
@@ -123,6 +123,13 @@ export const MinutiaSummary = defineElement<{
     startExpanded?: boolean | undefined;
 }>()({
     tagName: 'minutia-summary',
+    events: {
+        /**
+         * Fires with the full report every time any check changes, so a host can store or upload
+         * the same data the UI is showing without running every check a second time.
+         */
+        reportUpdate: defineElementEvent<MinutiaReport>(),
+    },
     styles: css`
         :host {
             display: flex;
@@ -190,7 +197,7 @@ export const MinutiaSummary = defineElement<{
             isPersistenceRunning: false,
         };
     },
-    init({inputs, updateState}) {
+    init({inputs, updateState, dispatch, events}) {
         const searchParams = new URLSearchParams(window.location.search);
         const marker =
             inputs.persistenceMarker || searchParams.get(markerSearchParam) || randomString();
@@ -207,6 +214,7 @@ export const MinutiaSummary = defineElement<{
                 updateState({
                     report,
                 });
+                dispatch(new events.reportUpdate(report));
             },
             {
                 cspProbeScriptUrl: inputs.cspProbeScriptUrl,
