@@ -53,7 +53,14 @@ function renderAssessments(assessments: ReadonlyArray<Assessment>) {
                         <tr>
                             <td class="assessment-label">${assessment.label}</td>
                             <td>${renderVerdict(assessment.verdict)}</td>
-                            <td class="note">${assessment.note}</td>
+                            <td class="note">
+                                ${assessment.note}
+                                ${assessment.debug
+                                    ? html`
+                                          <code class="debug">${assessment.debug}</code>
+                                      `
+                                    : ''}
+                            </td>
                         </tr>
                     `,
                 )}
@@ -135,6 +142,13 @@ export const MinutiaSummary = defineElement<{
         .pending {
             color: ${viraTheme.colors['vira-grey-foreground-non-body'].foreground.value};
             font-size: 13px;
+        }
+
+        /** The measured values a failing check was decided by, which the note only summarizes. */
+        .debug {
+            display: block;
+            font-size: 12px;
+            overflow-wrap: anywhere;
         }
 
         table {
