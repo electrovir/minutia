@@ -380,12 +380,11 @@ export function detectFontPlatform(): FontPlatformResult {
     const baselineWidths = fontBaselineFamilies.map((family) => measureTextWidth(family));
     const installedFonts = getObjectTypedValues(platformMarkerFonts)
         .flat()
-        .filter((font) =>
-            fontBaselineFamilies.some(
-                (family, index) =>
-                    measureTextWidth(`"${font}",${family}`) !== baselineWidths[index],
-            ),
-        );
+        .filter((font) => {
+            return fontBaselineFamilies.some((family, index) => {
+                return measureTextWidth(`"${font}",${family}`) !== baselineWidths[index];
+            });
+        });
 
     return {
         installedFonts,
@@ -439,9 +438,9 @@ const libmTanhSignatures: Record<LibmSignature, ReadonlyArray<number>> = {
 };
 
 function libmFromTanh(measured: ReadonlyArray<number>): LibmSignature | undefined {
-    return getObjectTypedKeys(libmTanhSignatures).find((signature) =>
-        libmTanhSignatures[signature].every((value, index) => value === measured[index]),
-    );
+    return getObjectTypedKeys(libmTanhSignatures).find((signature) => {
+        return libmTanhSignatures[signature].every((value, index) => value === measured[index]);
+    });
 }
 
 /**

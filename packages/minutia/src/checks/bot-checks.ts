@@ -236,11 +236,12 @@ const automationGlobalMarkers: ReadonlyArray<
 ];
 
 function detectAutomationGlobals(): AssessmentResult {
-    const markerHit = automationGlobalMarkers.find(
-        (marker) =>
+    const markerHit = automationGlobalMarkers.find((marker) => {
+        return (
             Reflect.get(marker.scope === MarkerScope.Window ? window : document, marker.key) !=
-            undefined,
-    );
+            undefined
+        );
+    });
     /** Selenium injects a `$cdc_…` property whose exact name varies, so match it by prefix. */
     const cdcKey = Object.keys(document).find((key) => key.startsWith('$cdc_'));
 

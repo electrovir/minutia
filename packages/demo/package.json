@@ -1,6 +1,6 @@
 {
     "name": "demo",
-    "version": "1.1.1",
+    "version": "1.2.0",
     "private": true,
     "homepage": "https://github.com/electrovir/minutia",
     "bugs": {
@@ -26,14 +26,14 @@
         "test:update": "npm test"
     },
     "dependencies": {
-        "element-vir": "^26.17.0",
-        "minutia": "^1.1.1",
-        "vira": "^31.28.3"
+        "element-vir": "^26.17.3",
+        "minutia": "^1.2.0",
+        "vira": "^31.31.5"
     },
     "devDependencies": {
-        "@augment-vir/common": "^32.2.1",
+        "@augment-vir/common": "^32.2.3",
         "typescript": "^6.0.3",
-        "vite": "^8.1.5"
+        "vite": "^8.2.2"
     },
     "engines": {
         "node": ">=22"

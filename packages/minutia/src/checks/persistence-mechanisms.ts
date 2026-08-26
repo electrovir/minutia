@@ -86,12 +86,13 @@ function openMarkerDatabase(): Promise<IDBDatabase> {
             request.result.createObjectStore(indexedDbStoreName);
         };
         request.onsuccess = () => resolve(request.result);
-        request.onerror = () =>
-            reject(
+        request.onerror = () => {
+            return reject(
                 new Error(
                     `open failed (${request.error?.name || 'unknown'}): ${request.error?.message || 'no message'}`,
                 ),
             );
+        };
     });
 }
 async function seedIndexedDb(marker: string): Promise<void> {

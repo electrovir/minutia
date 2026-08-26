@@ -26,9 +26,9 @@ describe(MinutiaSummary.tagName, () => {
     it('shows one card per check group once the checks resolve', async () => {
         const element = await renderSummary();
 
-        const headers = await waitUntil.isLengthExactly(expectedCardHeaders.length, () =>
-            element.shadowRoot.querySelectorAll('.card-header'),
-        );
+        const headers = await waitUntil.isLengthExactly(expectedCardHeaders.length, () => {
+            return element.shadowRoot.querySelectorAll('.card-header');
+        });
 
         assert.deepEquals(
             /** The verdict tag renders into a nested element, so only the leading text is compared. */
@@ -41,9 +41,9 @@ describe(MinutiaSummary.tagName, () => {
     it('labels and explains every assessment in every group', async () => {
         const element = await renderSummary();
 
-        const rows = await waitUntil.isLengthAtLeast(1, () =>
-            element.shadowRoot.querySelectorAll('tr'),
-        );
+        const rows = await waitUntil.isLengthAtLeast(1, () => {
+            return element.shadowRoot.querySelectorAll('tr');
+        });
 
         Array.from(rows).forEach((row) => {
             assert.isNotEmpty(
@@ -57,11 +57,11 @@ describe(MinutiaSummary.tagName, () => {
     it('collapses every card by default', async () => {
         const element = await renderSummary();
 
-        const cards = await waitUntil.isLengthExactly(expectedCardHeaders.length, () =>
-            element.shadowRoot.querySelectorAll<typeof ViraCollapsibleCard.InstanceType>(
+        const cards = await waitUntil.isLengthExactly(expectedCardHeaders.length, () => {
+            return element.shadowRoot.querySelectorAll<typeof ViraCollapsibleCard.InstanceType>(
                 ViraCollapsibleCard.tagName,
-            ),
-        );
+            );
+        });
 
         assert.deepEquals(
             Array.from(cards, (card) => card.instanceState.isExpanded),
@@ -80,11 +80,11 @@ describe(MinutiaSummary.tagName, () => {
             startExpanded: true,
         });
 
-        const cards = await waitUntil.isLengthExactly(expectedCardHeaders.length, () =>
-            element.shadowRoot.querySelectorAll<typeof ViraCollapsibleCard.InstanceType>(
+        const cards = await waitUntil.isLengthExactly(expectedCardHeaders.length, () => {
+            return element.shadowRoot.querySelectorAll<typeof ViraCollapsibleCard.InstanceType>(
                 ViraCollapsibleCard.tagName,
-            ),
-        );
+            );
+        });
 
         assert.deepEquals(
             Array.from(cards, (card) => card.instanceState.isExpanded),

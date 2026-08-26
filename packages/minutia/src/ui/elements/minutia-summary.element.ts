@@ -48,8 +48,8 @@ function renderAssessments(assessments: ReadonlyArray<Assessment>) {
     return html`
         <table>
             <tbody>
-                ${assessments.map(
-                    (assessment) => html`
+                ${assessments.map((assessment) => {
+                    return html`
                         <tr>
                             <td class="assessment-label">${assessment.label}</td>
                             <td>${renderVerdict(assessment.verdict)}</td>
@@ -62,8 +62,8 @@ function renderAssessments(assessments: ReadonlyArray<Assessment>) {
                                     : ''}
                             </td>
                         </tr>
-                    `,
-                )}
+                    `;
+                })}
             </tbody>
         </table>
     `;

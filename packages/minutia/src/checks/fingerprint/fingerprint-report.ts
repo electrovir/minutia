@@ -170,12 +170,12 @@ function scoreEntryAgainstDetected({
             ? guessWeights.fonts
             : 0,
         liveAudio != undefined &&
-        summary.audioSums.some((sum) =>
-            audioMatches({
+        summary.audioSums.some((sum) => {
+            return audioMatches({
                 candidate: sum,
                 live: liveAudio,
-            }),
-        )
+            });
+        })
             ? guessWeights.audio
             : 0,
     ];
@@ -328,12 +328,15 @@ export async function runFingerprintChecks(): Promise<FingerprintReport> {
                 : classifyFingerprint({
                       live: audio?.sum,
                       claimedValues: claimedAudioSums,
-                      isMatch: (candidate) =>
-                          audio != undefined &&
-                          audioMatches({
-                              candidate,
-                              live: audio.sum,
-                          }),
+                      isMatch: (candidate) => {
+                          return (
+                              audio != undefined &&
+                              audioMatches({
+                                  candidate,
+                                  live: audio.sum,
+                              })
+                          );
+                      },
                   }),
         },
     };

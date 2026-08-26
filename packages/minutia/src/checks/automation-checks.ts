@@ -439,11 +439,11 @@ function fetchLatestStableChromeVersion(): Promise<string | undefined> {
     return fetch(
         'https://chromiumdash.appspot.com/fetch_releases?channel=Stable&platform=Windows&num=1&offset=0',
     )
-        .then((response) =>
-            response.ok
+        .then((response) => {
+            return response.ok
                 ? response.json()
-                : Promise.reject(new Error(`${response.status} ${response.statusText}`)),
-        )
+                : Promise.reject(new Error(`${response.status} ${response.statusText}`));
+        })
         .then((releases: ReadonlyArray<{version: string}>) => releases[0]?.version)
         .catch(() => undefined);
 }
@@ -482,14 +482,14 @@ async function reportUserAgentData(report: ReportAssessment): Promise<void> {
     const relevantBrands = await userAgentData
         .getHighEntropyValues(['fullVersionList'])
         .then((values) => values.fullVersionList ?? [])
-        .then((brands) =>
-            brands.filter((item) =>
-                [
+        .then((brands) => {
+            return brands.filter((item) => {
+                return [
                     'Chromium',
                     'Google Chrome',
-                ].includes(item.brand),
-            ),
-        )
+                ].includes(item.brand);
+            });
+        })
         .catch(() => []);
     const brandNames = relevantBrands.map((item) => item.brand);
     const debug = `fullVersionList = ${JSON.stringify(relevantBrands)}`;
