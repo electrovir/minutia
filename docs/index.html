@@ -1,5 +1,5 @@
-<!DOCTYPE html><html class="default" lang="en" data-base="./"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>minutia - v1.2.0</title><meta name="description" content="Documentation for minutia"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css?cache=1787747244266"/><link rel="stylesheet" href="assets/highlight.css?cache=1787747244266"/><script defer src="assets/main.js?cache=1787747244266"></script><script async src="assets/icons.js?cache=1787747244266" id="tsd-icons-script"></script><script async src="assets/search.js?cache=1787747244266" id="tsd-search-script"></script><script async src="assets/navigation.js?cache=1787747244266" id="tsd-nav-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => window.app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar">
-<div class="tsd-toolbar-contents container"><a href="index.html" class="title">minutia - v1.2.0</a>
+<!DOCTYPE html><html class="default" lang="en" data-base="./"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>minutia - v1.2.1</title><meta name="description" content="Documentation for minutia"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css?cache=1787871414838"/><link rel="stylesheet" href="assets/highlight.css?cache=1787871414838"/><script defer src="assets/main.js?cache=1787871414838"></script><script async src="assets/icons.js?cache=1787871414838" id="tsd-icons-script"></script><script async src="assets/search.js?cache=1787871414838" id="tsd-search-script"></script><script async src="assets/navigation.js?cache=1787871414838" id="tsd-nav-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => window.app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar">
+<div class="tsd-toolbar-contents container"><a href="index.html" class="title">minutia - v1.2.1</a>
 <div id="tsd-toolbar-links"></div><button id="tsd-search-trigger" class="tsd-widget" aria-label="Search"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-search"></use></svg></button><dialog id="tsd-search" aria-label="Search"><input role="combobox" id="tsd-search-input" aria-controls="tsd-search-results" aria-autocomplete="list" aria-expanded="true" autocapitalize="off" autocomplete="off" placeholder="Search the docs" maxLength="100"/>
 <ul role="listbox" id="tsd-search-results"></ul>
 <div id="tsd-search-status" aria-live="polite" aria-atomic="true">
@@ -7,10 +7,10 @@
 <div class="container container-main">
 <div class="col-content">
 <div class="tsd-page-title">
-<h1>minutia - v1.2.0</h1></div>
+<h1>minutia - v1.2.1</h1></div>
 <div class="tsd-panel tsd-typography"><h1 id="minutia" class="tsd-anchor-link">minutia<a href="#minutia" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h1>
 <p>Browser fingerprinting, bot, automation, and storage-persistence checks behind a single API.</p>
-<p>Everything runs in the browser. Nothing is sent anywhere, and no network request is made unless you explicitly opt into one.</p>
+<p>Everything runs in the browser. It does not send collected data anywhere. By default, it loads a CSP probe script and, in Chromium-based browsers, checks the latest stable Chrome version. Configure <code>cspProbeScriptUrl</code> to keep the probe request on an origin you control.</p>
 <h2 id="install" class="tsd-anchor-link">Install<a href="#install" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
 <pre><code class="sh"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">i</span><span class="hl-1"> </span><span class="hl-2">minutia</span>
 </code><button type="button">Copy</button></pre>
@@ -45,13 +45,14 @@
 
 <p>Renders the test results. It updates itself as automation checks resolve.</p>
 <p>The element takes no required inputs. <code>cspProbeScriptUrl</code>, <code>persistenceMarker</code>, and <code>startExpanded</code> are optional inputs. Set <code>startExpanded</code> to open every section on load.</p>
-<h3 id="the-csp-bypass-check" class="tsd-anchor-link">The CSP bypass check<a href="#the-csp-bypass-check" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<p><code>bypassCsp</code> is the one check that touches the network. It defaults to <code>https://electrovir.github.io/minutia/csp-probe.js</code>, a do-nothing script hosted with this package's demo page. Point it at a cross-origin script your page's <code>script-src</code> forbids to keep the request on an origin you control:</p>
+<h3 id="network-use" class="tsd-anchor-link">Network use<a href="#network-use" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p><code>bypassCsp</code> loads a script to test whether browser automation bypasses your page's Content Security Policy. It defaults to <code>https://electrovir.github.io/minutia/csp-probe.js</code>, a do-nothing script hosted with this package's demo page. Point it at a cross-origin script your page's <code>script-src</code> forbids to keep the request on an origin you control:</p>
 <!-- example-link: src/readme-examples/csp-bypass.example.ts -->
 <pre><code class="TypeScript"><span class="hl-3">import</span><span class="hl-1"> {</span><span class="hl-4">runMinutia</span><span class="hl-1">} </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&#39;minutia&#39;</span><span class="hl-1">;</span><br/><br/><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-0">runMinutia</span><span class="hl-1">({</span><br/><span class="hl-1">    </span><span class="hl-7">/** Must be on an origin that this page&#39;s `script-src` forbids. */</span><br/><span class="hl-1">    </span><span class="hl-4">cspProbeScriptUrl:</span><span class="hl-1"> </span><span class="hl-2">&#39;https://your-other-origin.example/probe.js&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">});</span>
 </code><button type="button">Copy</button></pre>
 
 <p>The probe must be a real, loadable URL. A URL that 404s fails to load for the same reason a blocked one does, so the check would report a pass it never earned.</p>
+<p>On Chromium-based browsers, the user-agent checks also request the current stable Chrome version from Chromium Dash to identify automation using an unreleased Chrome version.</p>
 <h3 id="os-fingerprint-reference" class="tsd-anchor-link">OS fingerprint reference<a href="#os-fingerprint-reference" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <p>Fingerprint checks compare live measurements against <code>osFingerprintReference</code>, a table of what each OS and browser is known to produce. A value the claimed browser never produces means the user agent is lying, and <code>report.fingerprint.actualGuess</code> names what the machine actually looks like.</p>
 <p>The table only records fingerprints that have been observed, never inferred ones. Rows with <code>undefined</code> fields have not been captured yet and report <code>unknown</code> rather than risking a false accusation. To fill one in, run the tests and copy the <code>OS_FINGERPRINT_DATA</code> line they print.</p>
@@ -77,10 +78,10 @@
 <ul>
 <li><a href="#storage-persistence"><span>Storage persistence</span></a></li>
 <li><a href="#ui-element"><span>UI element</span></a></li>
-<li><a href="#the-csp-bypass-check"><span>The <wbr/>CSP bypass check</span></a></li>
+<li><a href="#network-use"><span>Network use</span></a></li>
 <li><a href="#os-fingerprint-reference"><span>OS fingerprint reference</span></a></li></ul></li></ul></div></details></div>
 <div class="site-menu">
-<nav class="tsd-navigation"><a href="modules.html">minutia - v1.2.0</a>
+<nav class="tsd-navigation"><a href="modules.html">minutia - v1.2.1</a>
 <ul class="tsd-small-nested-navigation" id="tsd-nav-container">
 <li>Loading...</li></ul></nav></div></div></div><footer>
 <p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer>
