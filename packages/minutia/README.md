@@ -2,7 +2,7 @@
 
 Browser fingerprinting, bot, automation, and storage-persistence checks behind a single API.
 
-Everything runs in the browser. Nothing is sent anywhere, and no network request is made unless you explicitly opt into one.
+Everything runs in the browser. It does not send collected data anywhere. By default, it loads a CSP probe script and, in Chromium-based browsers, checks the latest stable Chrome version. Configure `cspProbeScriptUrl` to keep the probe request on an origin you control.
 
 ## Install
 
@@ -108,9 +108,9 @@ Renders the test results. It updates itself as automation checks resolve.
 
 The element takes no required inputs. `cspProbeScriptUrl`, `persistenceMarker`, and `startExpanded` are optional inputs. Set `startExpanded` to open every section on load.
 
-### The CSP bypass check
+### Network use
 
-`bypassCsp` is the one check that touches the network. It defaults to `https://electrovir.github.io/minutia/csp-probe.js`, a do-nothing script hosted with this package's demo page. Point it at a cross-origin script your page's `script-src` forbids to keep the request on an origin you control:
+`bypassCsp` loads a script to test whether browser automation bypasses your page's Content Security Policy. It defaults to `https://electrovir.github.io/minutia/csp-probe.js`, a do-nothing script hosted with this package's demo page. Point it at a cross-origin script your page's `script-src` forbids to keep the request on an origin you control:
 
 <!-- example-link: src/readme-examples/csp-bypass.example.ts -->
 
@@ -124,6 +124,8 @@ await runMinutia({
 ```
 
 The probe must be a real, loadable URL. A URL that 404s fails to load for the same reason a blocked one does, so the check would report a pass it never earned.
+
+On Chromium-based browsers, the user-agent checks also request the current stable Chrome version from Chromium Dash to identify automation using an unreleased Chrome version.
 
 ### OS fingerprint reference
 

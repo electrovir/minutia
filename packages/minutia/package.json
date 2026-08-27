@@ -1,6 +1,6 @@
 {
     "name": "minutia",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "description": "Browser fingerprinting, bot, automation, and storage-persistence checks behind one result API.",
     "keywords": [
         "automation",

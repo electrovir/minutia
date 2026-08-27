@@ -1,6 +1,6 @@
 {
     "name": "demo",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "private": true,
     "homepage": "https://github.com/electrovir/minutia",
     "bugs": {
@@ -27,7 +27,7 @@
     },
     "dependencies": {
         "element-vir": "^26.17.3",
-        "minutia": "^1.2.0",
+        "minutia": "^1.2.1",
         "vira": "^31.31.5"
     },
     "devDependencies": {
